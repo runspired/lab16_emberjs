@@ -1,0 +1,52 @@
+
+export default Ember.Component.extend({
+  
+  	tagName: "td",
+	attributeBindings: "title",
+	classNameBindings: "negative",
+
+	text: function() {
+		return this.get("_renderedValue").text();
+	}.property("_renderedValue"),
+
+	title: function() {
+		return this.get("_renderedValue").tooltip();
+	}.property("_renderedValue"),
+
+	negative: function() {
+		return this.get("_renderedValue").isNegative();
+	}.property("_renderedValue"),
+
+	invalid: function() {
+		return this.get("_renderedValue").isInvalid();
+	}.property("_renderedValue"),
+
+	_renderedValue: function() {
+		var renderTarget = new RenderTarget();
+		this.get("value").renderTo(renderTarget);
+		return renderTarget;
+	}.property("value")
+
+});
+
+function RenderTarget() {}
+
+RenderTarget.prototype.render = function(values) {
+	this._values = values;
+};
+
+RenderTarget.prototype.text = function() {
+	return this._values.text;
+};
+
+RenderTarget.prototype.isNegative = function() {
+	return this._values.negative;
+};
+
+RenderTarget.prototype.isInvalid = function() {
+	return this._values.invalid;
+};
+
+RenderTarget.prototype.tooltip = function() {
+	return this._values.tooltip;
+};
